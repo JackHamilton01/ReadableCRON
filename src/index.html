@@ -86,6 +86,8 @@
 
         const describeButton = document.getElementById('describeButton');
         describeButton.addEventListener('click', () => {
+            document.getElementById('errorMessage').textContent = '';
+
             const cronInputValue = document.getElementById('cronInput').value;
             if (cronInputValue.length === 0) {
                 return;
