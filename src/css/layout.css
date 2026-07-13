@@ -1,0 +1,35 @@
+main {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.pane {
+    width: 60%;
+    padding-right: 20px;
+    margin-bottom: 2rem;
+}
+
+.pane-small {
+    width: 30%;
+    padding-right: 20px;
+    margin-bottom: 2rem;
+    margin-left: auto;
+}
+
+.pane-header {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    font-family: 'Inter', sans-serif;
+}
+.pane-header p {
+    font-size: 1rem;
+    color: #666; 
+    margin-top: 0.5rem;
+}
+
+h1 {
+    display: block;
+    font-size: 24px;
+    font-family: 'Inter', sans-serif; 
+}

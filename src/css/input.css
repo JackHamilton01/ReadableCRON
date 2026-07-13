@@ -1,0 +1,64 @@
+@import url('variables.css');
+
+.input-control {
+    display: flex;
+    flex-direction: row;
+}
+
+input, button {
+    box-sizing: border-box;
+}
+input {
+    height: 40px;
+    margin-right: 10px;
+    Border: 0px;
+    border-radius: 8px;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    padding-left: 12px;
+    border: 1px solid #ccc;
+}
+input::placeholder {
+    color: #d1d1d1;
+    opacity: 1; 
+}
+input:focus {
+    border: 3px solid var(--primary-color);
+    outline: none;
+}
+
+button {
+    height: 42px;
+    padding: 0 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+}
+button:hover {
+    background-color: var(--secondary-color);
+}
+button:disabled {
+    background-color: lightgray;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .input-control {
+        flex-direction: column;
+    }
+
+    input {
+        margin-right: 0;       
+        margin-bottom: 10px;   
+        width: 100%;           
+    }
+
+    button {
+        width: 100%;            
+    }
+}

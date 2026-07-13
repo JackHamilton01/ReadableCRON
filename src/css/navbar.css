@@ -1,0 +1,23 @@
+navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.site-logo {
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 20px;
+}
+
+.text-light {
+    color: #66665e;
+}
+
+.text-bold {
+    color: var(--secondary-color);
+}
