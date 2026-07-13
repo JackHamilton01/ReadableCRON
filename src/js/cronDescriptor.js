@@ -1,12 +1,10 @@
-// js/main.js
-import { getDescription } from 'https://esm.run/cron-descriptor';
+import cronstrue from 'https://esm.run/cronstrue';
 
 export function describeCronExpression(cronExpression) {
     try {
-        return getDescription(cronExpression, {
-            throwExceptionOnParseError: true,
-            casing: "sentence"
-        });
+        return cronstrue.toString(cronExpression, {
+            throwExceptionOnParseError: true
+        })
     } catch (err) {
         console.error("Invalid CRON expression", err);
     }
