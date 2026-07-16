@@ -1,134 +1,146 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Readable CRON</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/input.css">
-    <link rel="stylesheet" href="css/history.css">
-    <link rel="stylesheet" href="css/list.css">
-    <link rel="stylesheet" href="css/label.css">
-</head>
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/input.css" />
+    <link rel="stylesheet" href="css/history.css" />
+    <link rel="stylesheet" href="css/list.css" />
+    <link rel="stylesheet" href="css/label.css" />
+  </head>
+  <body>
     <navbar>
-        <a href="#" class="site-logo">
-            <span class="text-light">READABLE</span><span class="text-bold">CRON</span>
-        </a>
+      <a href="#" class="site-logo">
+        <span class="text-light">READABLE</span
+        ><span class="text-bold">CRON</span>
+      </a>
     </navbar>
 
     <main>
-        <div class="pane">
-            <div class="pane-header">
-                <h1>Parse a CRON Expression</h1>
-                <p>Enter a CRON expression to get a human-readable description.</p>
-            </div>
-
-            <div class="input-control">
-                <input type="text" id="cronInput" placeholder="*/5 * * * *">
-                <button id="describeButton" disabled>Describe</button>
-            </div>
-
-            <label id="cronDescription"></label>
-            <label id="errorMessage" class="error-message"></label>
+      <div class="pane">
+        <div class="pane-header">
+          <h1>Parse a CRON Expression</h1>
+          <p>Enter a CRON expression to get a human-readable description.</p>
         </div>
 
-        <div class="pane-small">
-            <div class="pane-header">
-                <h1>History</h1>
-                <p>Previously parsed CRON expressions and their descriptions.</p>
-            </div>
-
-            <div class="history">
-                <ul id="historyList"></ul>
-            </div>
+        <div class="input-control">
+          <input type="text" id="cronInput" placeholder="*/5 * * * *" />
+          <button id="describeButton" disabled>Describe</button>
         </div>
+
+        <label id="cronDescription"></label>
+        <label id="errorMessage" class="error-message"></label>
+      </div>
+
+      <div class="pane-small">
+        <div class="pane-header">
+          <h1>History</h1>
+          <p>Previously parsed CRON expressions and their descriptions.</p>
+        </div>
+
+        <div class="history">
+          <ul id="historyList"></ul>
+        </div>
+      </div>
     </main>
 
     <script type="module">
-        import { describeCronExpression } from './js/cronstrue.js';
-        import { getHistory, saveToHistory } from './js/localStorageHelpers.js';
+      import { describeCronExpression } from "./js/cronstrue.js";
+      import { getHistory, saveToHistory } from "./js/localStorageHelpers.js";
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const historyList = document.getElementById('historyList');
-            const history = getHistory(); 
+      window.addEventListener("DOMContentLoaded", () => {
+        showHistory();
+      });
 
-            historyList.innerHTML = '';
+      function showHistory() {
+        const historyList = document.getElementById("historyList");
+        const history = getHistory();
 
-            history.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'cron-card'; 
+        historyList.innerHTML = "";
 
-                const textContainer = document.createElement('div');
-                textContainer.innerHTML = `
+        history.forEach((item) => {
+          const li = document.createElement("li");
+          li.className = "cron-card";
+
+          const textContainer = document.createElement("div");
+          textContainer.innerHTML = `
                     <div class="cron-text">${item.expression}</div>
                     <div class="cron-desc">${item.description}</div>
                 `;
 
-                const icon = document.createElement('img');
-                icon.src = 'https://api.iconify.design/heroicons/clipboard-document.svg';
-                icon.className = 'copy-icon';
+          const icon = document.createElement("img");
+          icon.src =
+            "https://api.iconify.design/heroicons/clipboard-document.svg";
+          icon.className = "copy-icon";
 
-                li.appendChild(textContainer);
-                li.appendChild(icon);
+          li.appendChild(textContainer);
+          li.appendChild(icon);
 
-                li.addEventListener('click', () => {
-                    navigator.clipboard.writeText(item.expression);
-                });
+          li.addEventListener("click", () => {
+            navigator.clipboard.writeText(item.expression);
+          });
 
-                historyList.appendChild(li);
-            });
+          historyList.appendChild(li);
         });
+      }
 
-        const describeButton = document.getElementById('describeButton');
-        describeButton.addEventListener('click', () => {
-            document.getElementById('errorMessage').textContent = '';
+      const describeButton = document.getElementById("describeButton");
+      describeButton.addEventListener("click", () => {
+        document.getElementById("errorMessage").textContent = "";
 
-            const cronInputValue = document.getElementById('cronInput').value;
-            if (cronInputValue.length === 0) {
-                return;
-            }
-
-            if (!isValidCron(cronInputValue)) {
-                cronInput.value = ''; 
-                describeButton.disabled = true;
-                document.getElementById('errorMessage').textContent = 'Invalid CRON expression. Please enter a valid one.';
-                return; 
-            }
-
-            const cronDescriptionLabel = document.getElementById('cronDescription');
-            const cleanedCronInput = cleanInput(cronInputValue);
-
-            const cronExpressionDescription = describeCronExpression(cleanedCronInput);
-
-            cronDescriptionLabel.textContent = cronExpressionDescription;
-
-            saveToHistory(cleanedCronInput, cronExpressionDescription);
-        });
-
-        function cleanInput(inputValue) {
-            if (inputValue.startsWith('"')) {
-                inputValue = inputValue.slice(1);
-            }
-            
-            if (inputValue.endsWith('"')) {
-                inputValue = inputValue.slice(0, -1);
-            }
-            return inputValue;
+        const cronInputValue = document.getElementById("cronInput").value;
+        if (cronInputValue.length === 0) {
+          return;
         }
 
-        cronInput.addEventListener('input', () => {
-            describeButton.disabled = cronInput.value.length === 0;
-        });
-
-        function isValidCron(expression) {
-            const cronRegex = /^(\S+\s+){4,5}\S+$/;
-            return cronRegex.test(expression.trim());
+        if (!isValidCron(cronInputValue)) {
+          cronInput.value = "";
+          describeButton.disabled = true;
+          document.getElementById("errorMessage").textContent =
+            "Invalid CRON expression. Please enter a valid one.";
+          return;
         }
-        </script>
-</body>
+
+        const cronDescriptionLabel = document.getElementById("cronDescription");
+        const cleanedCronInput = cleanInput(cronInputValue);
+
+        const cronExpressionDescription =
+          describeCronExpression(cleanedCronInput);
+
+        cronDescriptionLabel.textContent = cronExpressionDescription;
+
+        saveToHistory(cleanedCronInput, cronExpressionDescription);
+        showHistory();
+      });
+
+      function cleanInput(inputValue) {
+        if (inputValue.startsWith('"')) {
+          inputValue = inputValue.slice(1);
+        }
+
+        if (inputValue.endsWith('"')) {
+          inputValue = inputValue.slice(0, -1);
+        }
+        return inputValue;
+      }
+
+      cronInput.addEventListener("input", () => {
+        describeButton.disabled = cronInput.value.length === 0;
+      });
+
+      function isValidCron(expression) {
+        const cronRegex = /^(\S+\s+){4,5}\S+$/;
+        return cronRegex.test(expression.trim());
+      }
+    </script>
+  </body>
 </html>
