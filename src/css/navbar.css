@@ -7,11 +7,21 @@ navbar {
 }
 
 .site-logo {
+    display: flex;
+    align-items: center;
+    gap: 0;
     text-decoration: none;
     font-family: 'Inter', sans-serif;
     font-weight: bold;
     font-size: 20px;
     margin-left: 20px;
+}
+
+.site-logo-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    margin-right: 8px;
 }
 
 .text-light {
