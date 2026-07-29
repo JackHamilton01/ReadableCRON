@@ -109,6 +109,7 @@
         });
       }
 
+      const cronInput = document.getElementById("cronInput");
       const describeButton = document.getElementById("describeButton");
       describeButton.addEventListener("click", () => {
         document.getElementById("errorMessage").textContent = "";
@@ -150,6 +151,10 @@
       }
 
       cronInput.addEventListener("input", () => {
+        if (cronInput.value.endsWith('*')) {
+          cronInput.value = cronInput.value + ' ';
+        }
+
         describeButton.disabled = cronInput.value.length === 0;
       });
 
